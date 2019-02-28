@@ -114,13 +114,16 @@
 			width: 100%;
 			display: flex;
 			flex-direction: column;
+			justify-content: space-around;
 		}
 		.info{
+			order: 1;
 			width: 100%;
 			height: 50%;
 			flex-grow: 1;
 			display: flex;
 			flex-direction: row-reverse;
+			margin-top: 25px
 		}
 		#person_info, #team_info{
 			order: 1;
@@ -128,6 +131,8 @@
 			height: 100%;
 			display: flex;
 			flex-direction: column;
+			background-color: rgb(33, 37, 41);
+			margin-right: 15px
 		}
 		#person_table, #team_table{
 			order: 2;
@@ -178,14 +183,23 @@
 		#wr{
 			order: 1;
 			flex-grow: 1;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
 		}
 		#matches{
 			order: 1;
 			flex-grow: 1;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;			
 		}
 		#invite{
 			order: 4;
-			flex-grow: 1
+			flex-grow: 1;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
 		}		
 	</style>
 	<body>
@@ -194,9 +208,9 @@
 		</div>
 		<div id="container">
 			<div class="info">
-				<div id="person_info" class="border-left border-bottom border-secondary">
+				<div id="person_info" class="shadow-lg rounded">
 					<div class="p_data border-bottom border-secondary">
-						<div class="name fst_info" style="margin-top: 15px">
+						<div class="name fst_info" style="margin-top: 25px">
 							<img class="rounded-circle" src="{{ data.avatar }}" style="height: 50px">
 							<span style="font-size: 25px; margin-left: 5px;">{{data.name}}</span>
 						</div>
@@ -204,27 +218,33 @@
 					</div>
 					<div id="pers_scnd_inf" class="border-bottom border-secondary">
 						<div class="border-right border-secondary" id="role">
-							<a style="font-size: 25px; color: #409EFF">Support</a>
+							<a style="font-size: 25px; color: #409EFF; margin-top: 20px">Support</a>
 						</div>
 						<div id="pers_best">
 							{% for i in heroes %}
-								<i class="d2mh hero-{{i.id}}" style="margin-top: 15px"></i>
+								<i class="d2mh hero-{{i.id}}" style="margin-top: 25px"></i>
 							{% endfor %}
 						</div>
 					</div>
-					<div id="pers_thd_inf">
-						<div class="border-right border-secondary" id="wr" style="font-size: 25px">
-							<span style="color: #A9CF54"> {{wl.wins}} </span>
-							<span> - </span>
-							<span style="color: #C23C2A"> {{wl.loses}} </span>
+					<div id="pers_thd_inf" class="border-bottom border-secondary">
+						<div class="border-right border-secondary" id="matches" style="font-size: 25px">
+							<span style="color: #A9CF54; margin-top: 20px"> {{wl.wins}} </span>
+							<span style="margin-top: 20px"> - </span>
+							<span style="color: #C23C2A; margin-top: 20px"> {{wl.loses}} </span>
 						</div>
-						<div id="matches"></div>
+						<div id="wr" style="font-size: 25px">
+							{% if wr > 50 %}
+								<span style="color: #A9CF54; margin-top: 20px">{{wr}}%</span>
+							{% else %}
+								<span style="color: #C23C2A; margin-top: 20px">{{wr}}%</span>
+							{% endif %}		
+						</div>
 					</div>
-					<div id="pers_history"></div>
+					<!--<div id="pers_history"></div>-->
 					{% if you == False and exist %}
-					<div id="invite">	<button class="btn btn-success"> Invite </button> </div>
+					<div id="invite">	<button class="btn btn-primary" style="height: 70%; width: 35%; margin-top: 10px"> Invite </button> </div>
 					{% elif you == False and exist == False%}
-					<div id="invite">	<button id="invite" class="btn btn-success" title="We don't have info about this person"> Invite </button> </div>
+					<div id="invite">	<button class="btn btn-primary" title="We don't have info about this person"> Invite </button> </div>
 					{% endif %}
 				</div>
 				<div id="person_table"></div>
