@@ -24,7 +24,6 @@
 			height: 100%;
 			margin: 0;
 			background-color: #343a40;
-			font-family: Poppins;
 			color: white
 		}
 /*		#con{
@@ -206,109 +205,111 @@
 		}		
 	</style>
 	<body>
-		<div id="b">
-			<navigation></navigation>
-		</div>
-		<div id="container">
-			<div class="info">
-				<div id="person_info" class="shadow-lg rounded">
-					<div class="p_data border-bottom border-secondary">
-						<div class="name fst_info" style="margin-top: 25px">
-							<img class="rounded-circle" src="{{ data.avatar }}" style="height: 50px">
-							<span style="font-size: 25px; margin-left: 5px;">{{data.name}}</span>
-						</div>
-						<img class="fst_info" src="https://gamepedia.cursecdn.com/dota2_gamepedia/thumb/8/88/SeasonalRank5-3.png/140px-SeasonalRank5-3.png?version=990f1323b00256eb84002ab050b9188b" style="height: 60px">
-					</div>
-					<div id="pers_scnd_inf" class="border-bottom border-secondary">
-						<div class="border-right border-secondary" id="role">
-							<a style="font-size: 25px; color: #409EFF; margin-top: 20px">Support</a>
-						</div>
-						<div id="pers_best">
-							{% for i in heroes %}
-								<i class="d2mh hero-{{i.id}}" style="margin-top: 25px"></i>
-							{% endfor %}
-						</div>
-					</div>
-					<div id="pers_thd_inf" class="border-bottom border-secondary">
-						<div class="border-right border-secondary" id="matches" style="font-size: 25px">
-							<span style="color: #A9CF54; margin-top: 20px"> {{wl.wins}} </span>
-							<span style="margin-top: 20px"> - </span>
-							<span style="color: #C23C2A; margin-top: 20px"> {{wl.loses}} </span>
-						</div>
-						<div id="wr" style="font-size: 25px">
-							{% if wr > 50 %}
-								<div id="notice1" style="color: #A9CF54; margin-top: 20px">
-									<span @mouseover="act1 = false" @mouseleave="act1 = true" v-if="act">{{wr}}%</span>
-								</div>
-							{% else %}
-								<div id="notice" style="color: #C23C2A; margin-top: 20px">
-									<span @mouseover="act = false" v-if="act">{{wr}}%</span>
-									<span @mouseover="act = true" v-if="act === false"> WR</span>
-								</div>
-							{% endif %}		
-						</div>
-					</div>
-					<!--<div id="pers_history"></div>-->
-					{% if you == False and exist %}
-					<div id="invite">	<button class="btn btn-primary" style="height: 70%; width: 35%; margin-top: 10px"> Invite </button> </div>
-					{% elif you == False and exist == False%}
-					<div id="invite">	<button class="btn btn-primary" title="We don't have info about this person"> Invite </button> </div>
-					{% endif %}
-				</div>
-				<div id="person_table">
-					<div class="p_table">
-						<table class="table table-hover table-dark rounded shadow-lg" id="p_games">
-							<thead>
-						    	<tr>
-						      		<th scope="col">Hero</th>
-						      		<th scope="col">Result</th>
-						      		<th scope="col">Duration</th>
-						      		<th scope="col">KDA</th>
-						    	</tr>
-					    	</thead>
-						    <tbody>
-						    	{% for ash in matches %}
-									<tr onclick="document.location = 'http://127.0.0.1:8090/match/{{ash.id}}'">
-										<td><i class = "d2mh hero-{{ ash.hero_id }}"></td>
-										{% if ash.win == 1 %}
-										  	<td style="color: #A9CF54">Win</td>
-										{% else %}
-											<td style="color: #C23C2A">Lose</td>
-										{% endif %}
-										<td>{{ ash.duration }}</td>
-										<td><span style="color:#A9CF54">{{ ash.kills }}</span>/<span style="color:#C23C2A">{{ ash.deaths }}</span>/<span style="color:rgba(255,255,255,0.6)">{{ ash.assists }}</span></td>
-									</tr>
-							    {% endfor %}						    							    							    							    
-						  	</tbody>
-						</table>
-					</div>
-					<div class="rounded shadow-lg" style="background-color: rgb(33, 37, 41); height: 100%">
-						<canvas id="game_graph"></canvas>
-					</div>
-					<div class="rounded shadow-lg" style="background-color: rgb(33, 37, 41); height: 100%">
-						<canvas id="stat_graph"></canvas>
-					</div>	
-				</div>
-			</div>								
-			<div class="info">
-				<div id="team_info">
-					<div class="p_data"></div>
-				</div>
-				<div id="team_table"></div>
+		<el-container>
+			<div id="b">
+				<navigation></navigation>
 			</div>
-		</div>
+			<div id="container">
+				<div class="info">
+					<div id="person_info" class="shadow-lg rounded">
+						<div class="p_data border-bottom border-secondary">
+							<div class="name fst_info" style="margin-top: 25px">
+								<img class="rounded-circle" src="{{ data.avatar }}" style="height: 50px">
+								<span style="font-size: 25px; margin-left: 5px;">{{data.name}}</span>
+							</div>
+							<img class="fst_info" src="https://gamepedia.cursecdn.com/dota2_gamepedia/thumb/8/88/SeasonalRank5-3.png/140px-SeasonalRank5-3.png?version=990f1323b00256eb84002ab050b9188b" style="height: 60px">
+						</div>
+						<div id="pers_scnd_inf" class="border-bottom border-secondary">
+							<div class="border-right border-secondary" id="role">
+								<a style="font-size: 25px; color: #409EFF; margin-top: 20px">Support</a>
+							</div>
+							<div id="pers_best">
+								{% for i in heroes %}
+									<i class="d2mh hero-{{i.id}}" style="margin-top: 25px"></i>
+								{% endfor %}
+							</div>
+						</div>
+						<div id="pers_thd_inf" class="border-bottom border-secondary">
+							<div class="border-right border-secondary" id="matches" style="font-size: 25px">
+								<span style="color: #A9CF54; margin-top: 20px"> {{wl.wins}} </span>
+								<span style="margin-top: 20px"> - </span>
+								<span style="color: #C23C2A; margin-top: 20px"> {{wl.loses}} </span>
+							</div>
+							<div id="wr" style="font-size: 25px">
+								{% if wr > 50 %}
+									<div id="notice1" style="color: #A9CF54; margin-top: 20px">
+										<span @mouseover="act1 = false" @mouseleave="act1 = true" v-if="act">{{wr}}%</span>
+									</div>
+								{% else %}
+									<div id="notice" style="color: #C23C2A; margin-top: 20px">
+										<span @mouseover="act = false" v-if="act">{{wr}}%</span>
+										<span @mouseover="act = true" v-if="act === false"> WR</span>
+									</div>
+								{% endif %}		
+							</div>
+						</div>
+						<!--<div id="pers_history"></div>-->
+						{% if you == False and exist %}
+						<div id="invite">	<button class="btn btn-primary" style="height: 70%; width: 35%; margin-top: 10px"> Invite </button> </div>
+						{% elif you == False and exist == False%}
+						<div id="invite">	<button class="btn btn-primary" title="We don't have info about this person"> Invite </button> </div>
+						{% endif %}
+					</div>
+					<div id="person_table">
+						<div class="p_table">
+							<table class="table table-hover table-dark rounded shadow-lg" id="p_games">
+								<thead>
+							    	<tr>
+							      		<th scope="col">Hero</th>
+							      		<th scope="col">Result</th>
+							      		<th scope="col">Duration</th>
+							      		<th scope="col">KDA</th>
+							    	</tr>
+						    	</thead>
+							    <tbody>
+							    	{% for ash in matches4 %}
+										<tr onclick="document.location = 'http://127.0.0.1:8090/match/{{ash.id}}'">
+											<td><i class = "d2mh hero-{{ ash.hero_id }}"></td>
+											{% if ash.win == 1 %}
+											  	<td style="color: #A9CF54">Win</td>
+											{% else %}
+												<td style="color: #C23C2A">Lose</td>
+											{% endif %}
+											<td>{{ ash.duration }}</td>
+											<td><span style="color:#A9CF54">{{ ash.kills }}</span>/<span style="color:#C23C2A">{{ ash.deaths }}</span>/<span style="color:rgba(255,255,255,0.6)">{{ ash.assists }}</span></td>
+										</tr>
+								    {% endfor %}						    							    							    							    
+							  	</tbody>
+							</table>
+						</div>
+						<div class="rounded shadow-lg" style="background-color: rgb(33, 37, 41); height: 100%">
+							<canvas id="game_graph"></canvas>
+						</div>
+						<div class="rounded shadow-lg" style="background-color: rgb(33, 37, 41); height: 100%">
+							<canvas id="stat_graph"></canvas>
+						</div>	
+					</div>
+				</div>								
+				<div class="info" style="margin-bottom: 15px">
+					<div class="rounded shadow-lg" id="team_info">
+						<div class="p_data"></div>
+					</div>
+					<div id="team_table"></div>
+				</div>
+			</div>
+		</el-container>	
 	<script src="{% static 'main.js' %}"></script>
 	<script type="text/javascript">
 		Chart.defaults.global.defaultFontColor = '#dee2e6';
 		var p_games = document.getElementById('game_graph').getContext('2d');
 		var p_games = new Chart(p_games, {
-			type: 'pie',
+			type: 'doughnut',
 			data: {
-				labels: ["Wins", "Loses"],
+				labels: ["Wins for last 6 games", "Loses for last 6 games"],
 				datasets:[{
-					label: "p_games",
-					data: [{{wl.wins}}, {{wl.loses}}],
-					backgroundColor: ["#A9CF54", "#C23C2A"],
+					label: "Last 6 games",
+					data: [{{wins_loses.wins}}, {{wins_loses.loses}}],
+					backgroundColor: ["#4682B4", "#CD5C5C"],
 					borderColor: "#343a40",
 					
 				}],
@@ -325,7 +326,7 @@
 					fill: false,
 					backgroundColor: "#409EFF",	
 					pointBackgroundColor: "#DCDFE6",
-					borderColor: "#409EFF",				
+					borderColor: "#4682B4",				
 				}]	
 			},
 			options: {
