@@ -20,12 +20,16 @@
 
 	</head>
 	<style type="text/css">
+		@font-face{
+			font-family: SanFrancisco;
+			src: url({% static 'SF-UI/SF-UI-Display-Light.otf' %});
+		}
 		html,body{
 			height: 100%;
 			margin: 0;
 			background-color: #343a40;
 			color: white;
-			font-family: Roboto,Arial,Helvetica,sans-serif
+			font-family: SanFrancisco,sans-serif
 		}
 /*		#con{
 			padding-top: 5%;	
@@ -302,6 +306,7 @@
 	<script src="{% static 'main.js' %}"></script>
 	<script type="text/javascript">
 		Chart.defaults.global.defaultFontColor = '#dee2e6';
+		Chart.defaults.global.defaultFontFamily = 'SanFrancisco';
 		var p_games = document.getElementById('game_graph').getContext('2d');
 		var p_games = new Chart(p_games, {
 			type: 'doughnut',
