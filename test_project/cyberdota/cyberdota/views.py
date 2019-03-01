@@ -184,8 +184,8 @@ def menu(request):
 		wl = logic.if_win(request.session['login'])
 		i = 0
 		matches = logic.last_matches(request.session['login'])
-		while i != len(matches):
-			matches[i]['win'] = wl[i]
+		while i != len(matches[0]):
+			matches[0][i]['win'] = wl[i]
 			i+=1
 		changes = logic.changes()
 		rating = logic.ratings()
@@ -220,7 +220,7 @@ def profile(request, idha):
 	text = '''SELECT name from ranks where rank_id={}'''.format(data['rank'])
 	cursor.execute(text)
 	data['rank'] = cursor.fetchall()[0][0]
-	data['avatar'] = datass['profile']['avatarfull']
+	data['avatar'] = datass['profile']['avatarmedium']
 	data['steam_url'] = datass['profile']['profileurl']
 	if if_exist:
 		text = '''SELECT region, lang, team FROM players WHERE account_id = {}'''.format(str(idha))
@@ -254,8 +254,21 @@ def profile(request, idha):
 		i+=1
 	matches = logic.last_matches(idha)		
 	print(data,heroes)
+	wl = logic.wl(idha)
+	wr = int(wl['wins'])/(int(wl['loses']) + int(wl['wins']))*100
+	if len(str(wl)) != 1:
+		wr = str(wr)[:2]
+	else:
+		wr = str(wr)[0]
+	wr = int(wr)		
+	is_you = ''
+	if idha == request.session['login']:
+		is_you = True
+	else:
+		is_you = False	 
 	cnx.close()
-	return render(request, 'profile.html', {'data': data, 'heroes': heroes, 'matches': matches, 'exist': if_exist})				
+	print(matches)
+	return render(request, 'profile.html', {'data': data, 'heroes': heroes, 'matches4': matches[0][:4], 'wins_loses': matches[1], 'exist': if_exist, 'you': is_you, 'wl': wl, 'wr': wr})				
 
 def team(request, team_id):
 	cnx = mysql.connector.connect(user='root', password='root',host='127.0.0.1',database='cyber_dota')

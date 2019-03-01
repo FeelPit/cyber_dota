@@ -37,7 +37,7 @@ def wl(idh):
 	print(idh)
 	url = urllib.request.urlopen(url)
 	data = json.loads(url.read())
-	win_lose = [data['win'], data['lose']]
+	win_lose = {'wins': data['win'], 'loses': data['lose']}
 	return win_lose
 
 def recent_tournaments():
@@ -117,7 +117,13 @@ def last_matches(idha):
 		i += 1
 		print(data['win'])
 		real_data.append(data)
-	return real_data[:4]
+	wins_loses = {'wins': 0, 'loses': 0}
+	for a in real_data:
+		if a['win'] == 1:
+			wins_loses['wins'] += 1
+		else:
+			wins_loses['loses'] += 1	
+	return real_data, wins_loses
 
 def changes():
 	cnx = mysql.connector.connect(user='root', password='root',host='127.0.0.1',database='cyber_dota')
@@ -242,8 +248,16 @@ def match(match_id):
 			dire.append(players_info[i])
 		i += 1 	
 	return radiant, dire
-match(4312920376)	
 
+def team_info(idh):
+	cnx = mysql.connector.connect(user='root', password='root',host='127.0.0.1',database='cyber_dota')
+	cursor = cnx.cursor()
+	text = '''SELECT * FROM teams WHERE id = "{}"'''.format(idh)		
+	cursor.execute(text)
+	print(cursor.fetchall())
+	team = cursor.fetchall()[0]
+	data = {'name': team[0], 'region': team[1], 'lang': team[2], 'rating': team[3], 'avatar': team[4]}
+	
 
 
 
