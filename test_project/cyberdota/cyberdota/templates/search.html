@@ -2,7 +2,7 @@
 {% load static %}
 <html>
     <head>
-        <title>Search teammates</title>
+        <title>Test</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="{% static 'cyberdota/css/flagicon.css' %}" >
@@ -16,13 +16,20 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
     </head>
     <style type="text/css">
+        @font-face{
+            font-family: SanFrancisco;
+            src: url({% static 'SF-UI/SF-UI-Display-Light.otf' %});
+        }
         html,body{
             height: 100%;
             margin: 0;
             background-color: #343a40;
-            font-family: Poppins;
+            color: white;
+            font-family: SanFrancisco,sans-serif
         }
         #exit{
             color: aqua;

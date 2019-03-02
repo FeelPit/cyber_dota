@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'cyberdota/css/stylesheets/dota2minimapheroes.css' %}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'hover.css' %}">
         <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet">
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -130,7 +131,7 @@
 			flex-direction: row;
 			margin-top: 25px
 		}
-		#person_info, #team_info{
+		#person_info{
 			order: 1;
 			flex-grow: 1;
 			height: 100%;
@@ -139,7 +140,7 @@
 			background-color: rgb(33, 37, 41);
 			margin-left: 15px
 		}
-		#person_table, #team_table{
+		#person_table{
 			order: 2;
 			flex-grow: 4;
 			height: 100%;
@@ -147,9 +148,18 @@
 			flex-direction: row;
 			justify-content: space-around;
 		}
+		#team_table{
+			order: 1;
+			flex-grow: 4;
+			height: 100%;
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+		}
 		.p_data{
 			order: 1;
-			flex-grow: 2;
+			flex-grow: 1;
 			width: 100%;
 			display: flex;
 			flex-direction: row;
@@ -158,9 +168,15 @@
 		.fst_info{
 			margin-top: 15px
 		}
-		#pers_scnd_inf, #pers_thd_inf{
+		#pers_scnd_inf{
 			order: 2;
-			flex-grow: 2;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: row;
+		}
+		#pers_thd_inf{
+			order: 2;
+			flex-grow: 0.5;
 			display: flex;
 			flex-direction: row;
 		}
@@ -199,14 +215,38 @@
 			justify-content: space-around;			
 		}
 		#invite{
-			order: 4;
-			flex-grow: 1;
+			order: 5;
+			flex-grow: 0.5;
 			display: flex;
 			flex-direction: row;
 			justify-content: space-around;
 		}
 		#p_games{
 			height: 100%
+		}
+		#pers_team{
+			order: 4;
+			flex-grow: 2;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-content: center;
+		}
+		#nm{
+			order: 1;
+			flex-grow: 1;
+			margin-top: 15px;
+			margin-left: 15px;
+			height: 100%;
+			width: 100%;
+		}
+		#team_name{
+			width: 100%;
+		}
+		#hero_graph{
+			order: 1;
+			flex-grow: 1;
+			margin: 10px;
 		}		
 	</style>
 	<body>
@@ -218,17 +258,17 @@
 				<div class="info">
 					<div id="person_info" class="shadow-lg rounded">
 						<div class="p_data border-bottom border-secondary">
-							<div class="name fst_info" style="margin-top: 25px">
+							<div class="name fst_info " style="margin-top: 25px">
 								<img class="rounded-circle" src="{{ data.avatar }}" style="height: 50px">
 								<span style="font-size: 25px; margin-left: 5px;">{{data.name}}</span>
 							</div>
-							<img class="fst_info" src="https://gamepedia.cursecdn.com/dota2_gamepedia/thumb/8/88/SeasonalRank5-3.png/140px-SeasonalRank5-3.png?version=990f1323b00256eb84002ab050b9188b" style="height: 60px">
+							<img class="fst_info hvr-bob" src="https://gamepedia.cursecdn.com/dota2_gamepedia/thumb/8/88/SeasonalRank5-3.png/140px-SeasonalRank5-3.png?version=990f1323b00256eb84002ab050b9188b" style="height: 60px">
 						</div>
 						<div id="pers_scnd_inf" class="border-bottom border-secondary">
-							<div class="border-right border-secondary" id="role">
+							<div class="hvr-bob" id="role">
 								<a style="font-size: 25px; color: #409EFF; margin-top: 20px">Support</a>
 							</div>
-							<div id="pers_best">
+							<div id="pers_best" class="border-left border-secondary">
 								{% for i in heroes %}
 									<i class="d2mh hero-{{i.id}}" style="margin-top: 25px"></i>
 								{% endfor %}
@@ -236,24 +276,46 @@
 						</div>
 						<div id="pers_thd_inf" class="border-bottom border-secondary">
 							<div class="border-right border-secondary" id="matches" style="font-size: 25px">
-								<span style="color: #A9CF54; margin-top: 20px"> {{wl.wins}} </span>
-								<span style="margin-top: 20px"> - </span>
-								<span style="color: #C23C2A; margin-top: 20px"> {{wl.loses}} </span>
+								<span style="color: #A9CF54; margin-top: 15px"> {{wl.wins}} </span>
+								<span style="margin-top: 15px"> - </span>
+								<span style="color: #C23C2A; margin-top: 15px"> {{wl.loses}} </span>
 							</div>
 							<div id="wr" style="font-size: 25px">
-								{% if wr > 50 %}
-									<div id="notice1" style="color: #A9CF54; margin-top: 20px">
-										<span @mouseover="act1 = false" @mouseleave="act1 = true" v-if="act">{{wr}}%</span>
+								{% if wr >= 50 %}
+									<div id="notice1" style="color: #A9CF54; margin-top: 15px">
+										<span @mouseover="act1 = false" @mouseleave="act1 = true" v-if="act1">{{wr}}%</span>
+										<span @mouseover="act1 = true" v-if="act1 === false"> WR</span>
 									</div>
 								{% else %}
-									<div id="notice" style="color: #C23C2A; margin-top: 20px">
+									<div id="notice" style="color: #C23C2A; margin-top: 15px">
 										<span @mouseover="act = false" v-if="act">{{wr}}%</span>
 										<span @mouseover="act = true" v-if="act === false"> WR</span>
 									</div>
 								{% endif %}		
 							</div>
 						</div>
-						<!--<div id="pers_history"></div>-->
+						<div id="pers_team" class="border-bottom border-secondary">
+							{% if data.team != None %}
+								<div id="team_name"  class="hvr-bob">
+									<div id="nm"><img src="{{data.team.avatar}}" style="height: 40px; width: 40px; order: 1;"> <a style="order: 2; flex-grow: 3; color: #409EFF; font-size: 25px; margin-left: 5px"> {{data.team.name}} </a> </div>
+								</div>
+							{% else %}
+								<div id="team_name">
+									{% if you %}
+										<div id="you_n">
+											You don't have a team :(
+											<button @click="find" class="btn btn-primary">
+												Find
+											</button>
+										</div>
+									{% else %}
+										<div>
+											We don't have any info
+										</div>
+									{% endif %}		
+								</div>
+							{% endif %}									
+						</div>
 						{% if you == False and exist %}
 						<div id="invite">	<button class="btn btn-primary" style="height: 70%; width: 35%; margin-top: 10px"> Invite </button> </div>
 						{% elif you == False and exist == False%}
@@ -294,14 +356,15 @@
 							<canvas id="stat_graph"></canvas>
 						</div>	
 					</div>
-				</div>								
-				<div class="info" style="margin-bottom: 15px">
-					<div class="rounded shadow-lg" id="team_info">
-						<div class="p_data"></div>
-					</div>
-					<div id="team_table"></div>
 				</div>
-			</div>
+				<div class="info" style="margin-bottom: 15px">
+					<div class="rounded shadow-lg" id="team_table" style="margin-left: 15px; margin-right: 15px">
+						<div class="rounded shadow-lg" style="background-color: rgb(33, 37, 41); height: 100%">
+							<canvas id="hero_graph" style=""></canvas>
+						</div>									
+					</div>
+				</div>								
+
 		</el-container>	
 	<script src="{% static 'main.js' %}"></script>
 	<script type="text/javascript">
@@ -330,9 +393,11 @@
 					label: "Your avg",
 					data: [4, 5, 8.5, 10, 10],
 					fill: false,
-					backgroundColor: "#409EFF",	
+					backgroundColor: "#4682B4",	
 					pointBackgroundColor: "#DCDFE6",
-					borderColor: "#4682B4",				
+					borderColor: "#4682B4",
+					borderWidth: 2,
+  					hoverBorderWidth: 0				
 				}]	
 			},
 			options: {
@@ -353,6 +418,30 @@
 				},				
 			}			
 		});
+		var hero_stats = document.getElementById('hero_graph').getContext('2d');
+		var pp = [250, 100, 400, 400]
+		var hero_stats = new Chart(hero_stats,{
+			type: 'bar',
+			data:{
+				labels:["AM", "CM", "ES", "ES"],
+				datasets:[{
+					data: [250, 100, 400, 400],
+					backgroundColor: ['#4682B4', '#4682B4', '#4682B4','#4682B4'],
+					borderWidth: 2 
+				}]
+			},
+			options:{
+			    scales: {
+			      yAxes: [{
+			      	barPercentage: 0.5,
+			        ticks: {
+			          beginAtZero: true,
+			          stepSize: 100
+			        }
+			      }]
+			    },				
+			}
+		});
 		var notice = new Vue({
 			el: '#notice',
 			data: {
@@ -363,6 +452,14 @@
 			el: '#notice1',
 			data: {
 				act1: true,
+			}
+		});
+		var find_t = new Vue({
+			el: 'you_n',
+			methods: {
+				find: function(){
+					window.location.replace("http://127.0.0.1:8090/search")
+				}
 			}
 		})		
 	</script>	

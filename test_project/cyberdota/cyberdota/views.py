@@ -217,7 +217,7 @@ def profile(request, idha):
 	data = {}
 	data['name'] = datass['profile']['personaname']
 	data['rank'] = datass['rank_tier']
-	text = '''SELECT name from ranks where rank_id={}'''.format(data['rank'])
+	text = '''SELECT name from ranks where rank_id = {}'''.format(data['rank'])
 	cursor.execute(text)
 	data['rank'] = cursor.fetchall()[0][0]
 	data['avatar'] = datass['profile']['avatarmedium']
@@ -227,11 +227,15 @@ def profile(request, idha):
 		cursor.execute(text)
 		text = cursor.fetchall()[0]
 		data['region'] = text[0]
+		data['lang'] = text[1]
+		data['team'] = text[2]
 		text = '''SELECT LOWER(id) FROM country WHERE name = "{}"'''.format(data['region'])
 		cursor.execute(text)
 		data['region'] = cursor.fetchall()[0][0]
-		data['lang'] = text[1]
-		data['team'] = text[2]
+		text = '''SELECT name, avatar FROM teams WHERE id = "{}"'''.format(data['team'])
+		cursor.execute(text)
+		tt = cursor.fetchall()[0]
+		data['team'] = {'name':tt[0], 'avatar':tt[1]} 
 	else:
 		data['region'],data['lang'],data['team'] = 'Have no info.','Have no info.','Have no info.'
 	url = 'https://api.opendota.com/api/players/{}/heroes'.format(str(idha))
