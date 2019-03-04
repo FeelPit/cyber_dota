@@ -23,7 +23,7 @@
 	<style type="text/css">
 		@font-face{
 			font-family: SanFrancisco;
-			src: url({% static 'SF-UI/SF-UI-Display-Light.otf' %});
+			src: url({% static 'SF-UI/SF-UI-Text-Light.otf' %});
 		}
 		html,body{
 			height: 100%;
@@ -32,109 +32,43 @@
 			color: white;
 			font-family: SanFrancisco,sans-serif
 		}
-/*		#con{
-			padding-top: 5%;	
-		}
-		#exit{
-			color:aqua;
-			text-decoration: none;
-		}
-		#data{
-			padding-top: 5%;
-		}
-		h2{
-			color:white;
-			padding-top: 15%;
-			float: right;
-		}
-		#avatar{
-			float:right;
-			width: 150px;
-			height: 150px;
-			border: 2px solid white;
-		}
-		#rank{
-			width: 70px;
-			height: 70px;
-			float: left;
-		}
-		#wl{
-			color: white
-		}
-		#invite{
-			text-decoration: none;
-			color:#A9CF54;
-		}
-		#hero{
-			height: 24px;
-		}
-		#tables{
-			padding-top: 5%;
-		}
-		.segment{
-			background: white;
-    		content: ".";
-    		display: inline-block;
-    		text-indent: -2000px;
-    		vertical-align: top;
-		}
-		.segment-losses{
-			background: red;
-			
-		}
-		.segment-wins{
-			background: #A9CF54;
-			
-		}
-		#graph{
-			width: 1000px;
-		}
-		#favorite{
-			height: 40px;
-			border: solid 1px white;
-		}
-		#matches{
-			color: white;
-		}
-		#succes{
-			color: white;
-			text-decoration: none;
-		}
-		#name{
-			font-size: 2em;
-			color: white;
-		}
-		#flag{
-			font-size: 15px
-		}
-		#sixwins{
-			width: 40px;
-			height: {{sw}};
-		}
-		#sixloses{
-			width: 40px;
-			height: {{sl}};
-		} */
 		#container{
 			height: 100%;
 			width: 100%;
 			display: flex;
-			flex-direction: column;
+			flex-direction: row;
 			justify-content: space-around;
 		}
 		.info{
 			order: 1;
-			width: 100%;
-			height: 50%;
+			width: 50%;
+			height: 100%;
 			flex-grow: 1;
 			display: flex;
-			flex-direction: row;
-			margin-top: 25px
+			flex-direction: column;
+			justify-content: space-between;
+			margin-top: 25px;
+			margin-left: 15px;
+			margin-bottom: 15px;
+
 		}
+		.info1{
+			order: 1;
+			width: 50%;
+			height: 100%;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			margin-top: 25px;
+			margin-left: 15px;
+			margin-bottom: 15px;
+
+		}		
 		#person_info{
 			order: 1;
 			flex-grow: 1;
-			height: 100%;
+			width: 66%;
 			display: flex;
 			flex-direction: column;
 			background-color: rgb(33, 37, 41);
@@ -142,10 +76,10 @@
 		}
 		#person_table{
 			order: 2;
-			flex-grow: 4;
-			height: 100%;
+			flex-grow: 3;
+			width: 100%;
 			display: flex;
-			flex-direction: row;
+			flex-direction: column;
 			justify-content: space-around;
 		}
 		#team_table{
@@ -247,6 +181,43 @@
 			order: 1;
 			flex-grow: 1;
 			margin: 10px;
+		}
+		#desc{
+			order:1;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			background-color: rgb(33, 37, 41);
+			margin-left: 15px;
+			margin-right: 15px
+		}
+		#name_photo{
+			order: 1;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: row;
+		}
+		#name_photo_name{
+			order: 1;
+			flex-grow: 1;
+		}
+		.p_table{
+			order: 1;
+			flex-grow: 1;
+			width: 100%;
+		}
+		#graphics{
+			order: 2;
+			flex-grow: 2;
+			display: flex;
+			flex-direction: row;
+			margin-top: 15px;
+			width: 65%;
+			margin-left: 15px
+		}
+		.graph{
+			order: 2;
+			flex-grow: 2;
 		}		
 	</style>
 	<body>
@@ -262,7 +233,7 @@
 								<img class="rounded-circle" src="{{ data.avatar }}" style="height: 50px">
 								<span style="font-size: 25px; margin-left: 5px;">{{data.name}}</span>
 							</div>
-							<img class="fst_info hvr-bob" src="https://gamepedia.cursecdn.com/dota2_gamepedia/thumb/8/88/SeasonalRank5-3.png/140px-SeasonalRank5-3.png?version=990f1323b00256eb84002ab050b9188b" style="height: 60px">
+							<img class="fst_info hvr-bob" src="{{data.rank.avatar}}" style="height: 60px">
 						</div>
 						<div id="pers_scnd_inf" class="border-bottom border-secondary">
 							<div class="hvr-bob" id="role">
@@ -294,75 +265,53 @@
 								{% endif %}		
 							</div>
 						</div>
-						<div id="pers_team" class="border-bottom border-secondary">
-							{% if data.team != None %}
+						<div id="pers_team">
+							{% if data.team != "None" %}
 								<div id="team_name"  class="hvr-bob">
 									<div id="nm"><img src="{{data.team.avatar}}" style="height: 40px; width: 40px; order: 1;"> <a style="order: 2; flex-grow: 3; color: #409EFF; font-size: 25px; margin-left: 5px"> {{data.team.name}} </a> </div>
 								</div>
 							{% else %}
 								<div id="team_name">
 									{% if you %}
-										<div id="you_n">
-											You don't have a team :(
-											<button @click="find" class="btn btn-primary">
+										<div id="you_n" style="display: flex; flex-direction: column; align-items: center;">
+											<a style="font-size: 25px; color: #409EFF; order: 1; margin-top: 10px;">You don't have a team :(</a>
+											<button style="order: 2; width: 50%; margin-top: 10px;" @click="find" class="btn btn-primary">
 												Find
 											</button>
 										</div>
 									{% else %}
 										<div>
-											We don't have any info
+											This person doesn't have any team
 										</div>
 									{% endif %}		
 								</div>
 							{% endif %}									
 						</div>
 						{% if you == False and exist %}
-						<div id="invite">	<button class="btn btn-primary" style="height: 70%; width: 35%; margin-top: 10px"> Invite </button> </div>
+						<div class="border-top border-secondary" id="invite">	<button class="btn btn-primary" style="height: 70%; width: 35%; margin-top: 10px"> Invite </button> </div>
 						{% elif you == False and exist == False%}
-						<div id="invite">	<button class="btn btn-primary" title="We don't have info about this person"> Invite </button> </div>
+						<div class="border-top border-secondary" id="invite">	<button class="btn btn-primary" title="We don't have info about this person"> Invite </button> </div>
 						{% endif %}
 					</div>
-					<div id="person_table">
-						<div class="p_table">
-							<table class="table table-hover table-dark rounded shadow-lg" id="p_games">
-								<thead>
-							    	<tr>
-							      		<th scope="col">Hero</th>
-							      		<th scope="col">Result</th>
-							      		<th scope="col">Duration</th>
-							      		<th scope="col">KDA</th>
-							    	</tr>
-						    	</thead>
-							    <tbody>
-							    	{% for ash in matches4 %}
-										<tr onclick="document.location = 'http://127.0.0.1:8090/match/{{ash.id}}'">
-											<td><i class = "d2mh hero-{{ ash.hero_id }}"></td>
-											{% if ash.win == 1 %}
-											  	<td style="color: #A9CF54">Win</td>
-											{% else %}
-												<td style="color: #C23C2A">Lose</td>
-											{% endif %}
-											<td>{{ ash.duration }}</td>
-											<td><span style="color:#A9CF54">{{ ash.kills }}</span>/<span style="color:#C23C2A">{{ ash.deaths }}</span>/<span style="color:rgba(255,255,255,0.6)">{{ ash.assists }}</span></td>
-										</tr>
-								    {% endfor %}						    							    							    							    
-							  	</tbody>
-							</table>
-						</div>
-						<div class="rounded shadow-lg" style="background-color: rgb(33, 37, 41); height: 100%">
-							<canvas id="game_graph"></canvas>
-						</div>
-						<div class="rounded shadow-lg" style="background-color: rgb(33, 37, 41); height: 100%">
-							<canvas id="stat_graph"></canvas>
-						</div>	
-					</div>
+					<div id="graphics">
+							<div class="graph rounded shadow-lg" style="background-color: rgb(33, 37, 41); width: 50%; height: 70%">
+								<canvas id="game_graph"></canvas>
+							</div>
+							<div class="graph rounded shadow-lg" style="background-color: rgb(33, 37, 41); width: 50%; margin-left: 10px; height: 70%">
+								<canvas id="stat_graph"></canvas>
+							</div>
+					</div>						
 				</div>
-				<div class="info" style="margin-bottom: 15px">
-					<div class="rounded shadow-lg" id="team_table" style="margin-left: 15px; margin-right: 15px">
-						<div class="rounded shadow-lg" style="background-color: rgb(33, 37, 41); height: 100%">
-							<canvas id="hero_graph" style=""></canvas>
-						</div>									
-					</div>
+				<div class="info1" style="margin-bottom: 15px">
+					<div id="person_table">
+						<div id="desc" class="shadow-lg rounded">
+							<div id="name_photo" class="border-bottom border-secondary">
+								<div id="name_photo_name">
+									<img src="https://pp.userapi.com/c841124/v841124900/ec4/flPV3UK1hG4.jpg" style="height: 150px; width: 120px">
+								</div>
+							</div>
+						</div>	
+					</div>	      
 				</div>								
 
 		</el-container>	
@@ -388,13 +337,13 @@
 		var p_stats = new Chart(p_stats, {
 			type: 'radar',
 			data: {
-				labels:["Farming", "Warding", "Healing", "Siege", "Fights"],
+				labels:["Farm", "Wards", "Heal", "Siege", "Fights"],
 				datasets:[{
-					label: "Your avg",
-					data: [4, 5, 8.5, 10, 10],
+					label: "Avg",
+					data: [{{fa_avg}}, 2.5, 4.5, 5, {{fi_avg}}],
 					fill: false,
 					backgroundColor: "#4682B4",	
-					pointBackgroundColor: "#DCDFE6",
+					pointBackgroundColor: "#CD5C5C",
 					borderColor: "#4682B4",
 					borderWidth: 2,
   					hoverBorderWidth: 0				
@@ -403,7 +352,9 @@
 			options: {
 				scale:{
 					ticks:{
-						display: false
+						display: false,
+						beginAtZero: true,
+						max: 5
 					},
 					gridLines:{
 						color: "#343a40",
@@ -418,30 +369,6 @@
 				},				
 			}			
 		});
-		var hero_stats = document.getElementById('hero_graph').getContext('2d');
-		var pp = [250, 100, 400, 400]
-		var hero_stats = new Chart(hero_stats,{
-			type: 'bar',
-			data:{
-				labels:["AM", "CM", "ES", "ES"],
-				datasets:[{
-					data: [250, 100, 400, 400],
-					backgroundColor: ['#4682B4', '#4682B4', '#4682B4','#4682B4'],
-					borderWidth: 2 
-				}]
-			},
-			options:{
-			    scales: {
-			      yAxes: [{
-			      	barPercentage: 0.5,
-			        ticks: {
-			          beginAtZero: true,
-			          stepSize: 100
-			        }
-			      }]
-			    },				
-			}
-		});
 		var notice = new Vue({
 			el: '#notice',
 			data: {
@@ -455,7 +382,7 @@
 			}
 		});
 		var find_t = new Vue({
-			el: 'you_n',
+			el: '#you_n',
 			methods: {
 				find: function(){
 					window.location.replace("http://127.0.0.1:8090/search")

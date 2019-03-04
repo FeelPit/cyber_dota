@@ -258,9 +258,52 @@ def team_info(idh):
 	team = cursor.fetchall()[0]
 	data = {'name': team[0], 'region': team[1], 'lang': team[2], 'rating': team[3], 'avatar': team[4]}
 	
-
-
-
+def avgs(idh):
+	url = 'https://api.opendota.com/api/players/{}/recentMatches'.format(str(idh))
+	url = urllib.request.urlopen(url)
+	data = json.loads(url.read())
+	i = 0	
+	kda = []
+	gpms = []
+	while i != 6:
+		if data[i]['deaths'] != 0:
+			kda.append((data[i]['kills'] + data[i]['assists']) / data[i]['deaths'])
+			gpms.append(data[i]['gold_per_min'])
+		else:
+			kda.append(data[i]['kills'] + data[i]['assists'])
+			gpms.append(data[i]['gold_per_min'])	
+		i += 1
+	s = 0
+	s1 = 0
+	i = 0
+	for b in kda:
+		s += b
+	for b in gpms:
+		s1 += b
+	fa_avg = s1//len(gpms)
+	fi_avg = s//len(kda)
+	if fi_avg < 0:
+		fi_avg = 1
+	elif  0 <= fi_avg < 2:
+		fi_avg = 2
+	elif 2 <= fi_avg < 4:
+		fi_avg = 3
+	elif 4 <= fi_avg < 6:
+		fi_avg = 4
+	elif 6 <= fi_avg:
+		fi_avg = 5
+	if fa_avg < 0:
+		fa_avg = 1
+	elif  0 <= fa_avg < 200:
+		fa_avg = 2
+	elif 200 <= fa_avg < 400:
+		fa_avg = 3
+	elif 600 <= fa_avg < 800:
+		fa_avg = 4
+	elif 800 <= fa_avg:
+		fa_avg = 5																 			
+	return fi_avg, fa_avg 	
+avgs(863960961)
 
 
 
