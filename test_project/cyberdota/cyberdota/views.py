@@ -34,11 +34,7 @@ class InviteForm(forms.Form):
 
 
 def welcome_page(request):
-	if request.session.get('login') != None:
-		if_login = True
-	else:
-		if_login = False	
-	return render(request, 'welcome_page.html', {'if_login': if_login})
+	return render(request, 'welcome_page.html')
 
 def registration(request):
 	form = PlayersRegistrationForm(data=request.POST)
@@ -188,8 +184,8 @@ def menu(request):
 		wl = logic.if_win(request.session['login'])
 		i = 0
 		matches = logic.last_matches(request.session['login'])
-		while i != len(matches[0]):
-			matches[0][i]['win'] = wl[i]
+		while i != len(matches):
+			matches[i]['win'] = wl[i]
 			i+=1
 		changes = logic.changes()
 		rating = logic.ratings()
@@ -221,27 +217,21 @@ def profile(request, idha):
 	data = {}
 	data['name'] = datass['profile']['personaname']
 	data['rank'] = datass['rank_tier']
-	text = '''SELECT name, avatar from ranks where rank_id = {}'''.format(data['rank'])
+	text = '''SELECT name from ranks where rank_id={}'''.format(data['rank'])
 	cursor.execute(text)
-	text = cursor.fetchall()[0]
-	data['rank'] = {'name': text[0], 'avatar': text[1]}
-	data['avatar'] = datass['profile']['avatarmedium']
+	data['rank'] = cursor.fetchall()[0][0]
+	data['avatar'] = datass['profile']['avatarfull']
 	data['steam_url'] = datass['profile']['profileurl']
 	if if_exist:
 		text = '''SELECT region, lang, team FROM players WHERE account_id = {}'''.format(str(idha))
 		cursor.execute(text)
 		text = cursor.fetchall()[0]
 		data['region'] = text[0]
-		data['lang'] = text[1]
-		data['team'] = text[2]
 		text = '''SELECT LOWER(id) FROM country WHERE name = "{}"'''.format(data['region'])
 		cursor.execute(text)
 		data['region'] = cursor.fetchall()[0][0]
-		if data['team'] != 'None':
-			text = '''SELECT name, avatar FROM teams WHERE id = "{}"'''.format(data['team'])
-			cursor.execute(text)
-			tt = cursor.fetchall()[0]
-			data['team'] = {'name':tt[0], 'avatar':tt[1]} 
+		data['lang'] = text[1]
+		data['team'] = text[2]
 	else:
 		data['region'],data['lang'],data['team'] = 'Have no info.','Have no info.','Have no info.'
 	url = 'https://api.opendota.com/api/players/{}/heroes'.format(str(idha))
@@ -262,24 +252,10 @@ def profile(request, idha):
 			stat['wr'] = stat['wr'][0]
 		heroes.append(stat)	
 		i+=1
-	matches = logic.last_matches(idha)
-	wl = logic.wl(idha)
-	wr = int(wl['wins'])/(int(wl['loses']) + int(wl['wins']))*100
-	if len(str(wl)) != 1:
-		wr = str(wr)[:2]
-	else:
-		wr = str(wr)[0]
-	wr = int(wr)		
-	is_you = ''
-	if idha == request.session['login']:
-		is_you = True
-	else:
-		is_you = False	 
+	matches = logic.last_matches(idha)		
+	print(data,heroes)
 	cnx.close()
-	fi_avg = logic.avgs(idha)[0]
-	fa_avg = logic.avgs(idha)[1]
-	print(data['team'])
-	return render(request, 'profile.html', {'data': data, 'heroes': heroes, 'matches4': matches[0][:4], 'wins_loses': matches[1], 'exist': if_exist, 'you': is_you, 'wl': wl, 'wr': wr, 'fi_avg': fi_avg, 'fa_avg': fa_avg})				
+	return render(request, 'profile.html', {'data': data, 'heroes': heroes, 'matches': matches, 'exist': if_exist})				
 
 def team(request, team_id):
 	cnx = mysql.connector.connect(user='root', password='root',host='127.0.0.1',database='cyber_dota')
