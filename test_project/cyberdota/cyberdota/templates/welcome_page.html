@@ -125,14 +125,9 @@
 			</div>
 			<div class="w3-row-padding w3-light-grey w3-padding-64 w3-container" style="order: 1; flex-grow: 1">
 			  <div class="w3-content" style="display: flex; flex-direction: row;">
-			    <div class="w3-twothird" style="flex-grow: 1">
-			      	<h1>Осуществи свою мечту.</h1>
-			    </div>
-			  	{% if if_login %}
-			  		<button class="btn btn-success">
-			  			<span style="font-size: 16px">Перейти в свой профиль</span>
-			  		</button>
-			  	{% else %}			    	
+			    	<div class="w3-twothird" style="flex-grow: 1">
+			      		<h1>Осуществи свою мечту.</h1>
+			    	</div>
 			    	<div style="flex-grow: 3">
 						<form method="get" action="http://127.0.0.1:8090/login" style="margin-left:35px">
 					    	<button class="btn btn-success"><a>Войдите</a></button>
@@ -141,8 +136,7 @@
 						<form method="get" action="http://127.0.0.1:8090/reg">
 						<button class="btn btn-danger"><a>Зарегистрируйтесь</a></button>
 						</form>
-					</div>
-				{% endif %}				    
+					</div>			    
 			  </div>
 			</div>
 		</div>
