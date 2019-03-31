@@ -37,7 +37,7 @@ def wl(idh):
 	print(idh)
 	url = urllib.request.urlopen(url)
 	data = json.loads(url.read())
-	win_lose = [data['win'], data['lose']]
+	win_lose = {'wins': data['win'], 'loses': data['lose']}
 	return win_lose
 
 def recent_tournaments():
@@ -117,7 +117,13 @@ def last_matches(idha):
 		i += 1
 		print(data['win'])
 		real_data.append(data)
-	return real_data[:4]
+	wins_loses = {'wins': 0, 'loses': 0}
+	for a in real_data:
+		if a['win'] == 1:
+			wins_loses['wins'] += 1
+		else:
+			wins_loses['loses'] += 1	
+	return real_data, wins_loses
 
 def changes():
 	cnx = mysql.connector.connect(user='root', password='root',host='127.0.0.1',database='cyber_dota')
@@ -242,11 +248,62 @@ def match(match_id):
 			dire.append(players_info[i])
 		i += 1 	
 	return radiant, dire
-match(4312920376)	
 
-
-
-
+def team_info(idh):
+	cnx = mysql.connector.connect(user='root', password='root',host='127.0.0.1',database='cyber_dota')
+	cursor = cnx.cursor()
+	text = '''SELECT * FROM teams WHERE id = "{}"'''.format(idh)		
+	cursor.execute(text)
+	print(cursor.fetchall())
+	team = cursor.fetchall()[0]
+	data = {'name': team[0], 'region': team[1], 'lang': team[2], 'rating': team[3], 'avatar': team[4]}
+	
+def avgs(idh):
+	url = 'https://api.opendota.com/api/players/{}/recentMatches'.format(str(idh))
+	url = urllib.request.urlopen(url)
+	data = json.loads(url.read())
+	i = 0	
+	kda = []
+	gpms = []
+	while i != 6:
+		if data[i]['deaths'] != 0:
+			kda.append((data[i]['kills'] + data[i]['assists']) / data[i]['deaths'])
+			gpms.append(data[i]['gold_per_min'])
+		else:
+			kda.append(data[i]['kills'] + data[i]['assists'])
+			gpms.append(data[i]['gold_per_min'])	
+		i += 1
+	s = 0
+	s1 = 0
+	i = 0
+	for b in kda:
+		s += b
+	for b in gpms:
+		s1 += b
+	fa_avg = s1//len(gpms)
+	fi_avg = s//len(kda)
+	if fi_avg < 0:
+		fi_avg = 1
+	elif  0 <= fi_avg < 2:
+		fi_avg = 2
+	elif 2 <= fi_avg < 4:
+		fi_avg = 3
+	elif 4 <= fi_avg < 6:
+		fi_avg = 4
+	elif 6 <= fi_avg:
+		fi_avg = 5
+	if fa_avg < 0:
+		fa_avg = 1
+	elif  0 <= fa_avg < 200:
+		fa_avg = 2
+	elif 200 <= fa_avg < 400:
+		fa_avg = 3
+	elif 600 <= fa_avg < 800:
+		fa_avg = 4
+	elif 800 <= fa_avg:
+		fa_avg = 5																 			
+	return fi_avg, fa_avg 	
+avgs(863960961)
 
 
 

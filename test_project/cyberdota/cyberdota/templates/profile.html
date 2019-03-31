@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'cyberdota/css/stylesheets/dota2minimapheroes.css' %}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'hover.css' %}">
         <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet">
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -16,296 +17,378 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
 	</head>
 	<style type="text/css">
+		@font-face{
+			font-family: SanFrancisco;
+			src: url({% static 'SF-UI/SF-UI-Text-Light.otf' %});
+		}
 		html,body{
 			height: 100%;
 			margin: 0;
 			background-color: #343a40;
-			font-family: Poppins;
+			color: white;
+			font-family: SanFrancisco,sans-serif
 		}
-		#con{
-			padding-top: 5%;	
+		#container{
+			height: 100%;
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
 		}
-		#exit{
-			color:aqua;
-			text-decoration: none;
+		.info{
+			order: 1;
+			width: 50%;
+			height: 100%;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			margin-top: 25px;
+			margin-left: 15px;
+			margin-bottom: 15px;
+
 		}
-		#data{
-			padding-top: 5%;
+		.info1{
+			order: 1;
+			width: 50%;
+			height: 100%;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			margin-top: 25px;
+			margin-left: 15px;
+			margin-bottom: 15px;
+
+		}		
+		#person_info{
+			order: 1;
+			flex-grow: 1;
+			width: 66%;
+			display: flex;
+			flex-direction: column;
+			background-color: rgb(33, 37, 41);
+			margin-left: 15px
 		}
-		h2{
-			color:white;
-			padding-top: 15%;
-			float: right;
+		#person_table{
+			order: 2;
+			flex-grow: 3;
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
 		}
-		#avatar{
-			float:right;
-			width: 150px;
-			height: 150px;
-			border: 2px solid white;
+		#team_table{
+			order: 1;
+			flex-grow: 4;
+			height: 100%;
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
 		}
-		#rank{
-			width: 70px;
-			height: 70px;
-			float: left;
+		.p_data{
+			order: 1;
+			flex-grow: 1;
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
 		}
-		#wl{
-			color: white
+		.fst_info{
+			margin-top: 15px
 		}
-		#invite{
-			text-decoration: none;
-			color:#A9CF54;
+		#pers_scnd_inf{
+			order: 2;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: row;
 		}
-		#hero{
-			height: 24px;
+		#pers_thd_inf{
+			order: 2;
+			flex-grow: 0.5;
+			display: flex;
+			flex-direction: row;
 		}
-		#tables{
-			padding-top: 5%;
+		#pers_history{
+			order: 3;
+			flex-grow: 15;
 		}
-		.segment{
-			background: white;
-    		content: ".";
-    		display: inline-block;
-    		text-indent: -2000px;
-    		vertical-align: top;
+		#role{
+			order: 1;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+			align-items: baseline;
 		}
-		.segment-losses{
-			background: red;
-			
+		#pers_best{
+			order: 2;
+			flex-grow: 2;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+			align-items: baseline;
 		}
-		.segment-wins{
-			background: #A9CF54;
-			
-		}
-		#graph{
-			width: 1000px;
-		}
-		#favorite{
-			height: 40px;
-			border: solid 1px white;
+		#wr{
+			order: 1;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
 		}
 		#matches{
-			color: white;
+			order: 1;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;			
 		}
-		#succes{
-			color: white;
-			text-decoration: none;
+		#invite{
+			order: 5;
+			flex-grow: 0.5;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
 		}
-		#name{
-			font-size: 2em;
-			color: white;
+		#p_games{
+			height: 100%
 		}
-		#flag{
-			font-size: 15px
+		#pers_team{
+			order: 4;
+			flex-grow: 2;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-content: center;
 		}
-		#sixwins{
-			width: 40px;
-			height: {{sw}};
+		#nm{
+			order: 1;
+			flex-grow: 1;
+			margin-top: 15px;
+			margin-left: 15px;
+			height: 100%;
+			width: 100%;
 		}
-		#sixloses{
-			width: 40px;
-			height: {{sl}};
+		#team_name{
+			width: 100%;
 		}
+		#hero_graph{
+			order: 1;
+			flex-grow: 1;
+			margin: 10px;
+		}
+		#desc{
+			order:1;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			background-color: rgb(33, 37, 41);
+			margin-left: 15px;
+			margin-right: 15px
+		}
+		#name_photo{
+			order: 1;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: row;
+		}
+		#name_photo_name{
+			order: 1;
+			flex-grow: 1;
+		}
+		.p_table{
+			order: 1;
+			flex-grow: 1;
+			width: 100%;
+		}
+		#graphics{
+			order: 2;
+			flex-grow: 2;
+			display: flex;
+			flex-direction: row;
+			margin-top: 15px;
+			width: 65%;
+			margin-left: 15px
+		}
+		.graph{
+			order: 2;
+			flex-grow: 2;
+		}		
 	</style>
 	<body>
-		<div id="b">
-			<navigation></navigation>
-		</div>
-		<div class="container-fluid" id="data">
-			<div class="container-fluid" id = "con">
-				<div class="row" style=" background:#2E3740">
-					<div class="col-sm col-md col-lg" id="prof_img">
-						<div class="row">
-							<div class="col-lg col-sm col-md ">
-								<img src="{{ data.avatar }}" id="avatar">
-							</div>
-							<div class="col-lg col-sm col-md ">
-								<div class="row">
-									<div class="col-lg col-sm col-md ">
-										<a id="name"><span class="flag-icon flag-icon-{{data.region}}" id="flag"></span> {{data.name}}</a>
-									</div>
-									<div class="col-lg col-sm col-md ">
-										<span style="color: white">{{data.rank}}</span>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg col-sm col-md " style="padding-left: 15%">
-										<h4 style="color: rgba(255,255,255,0.6);">Support</h3>
-									</div>
-									<div class="col-lg col-sm col-md ">
-										
-									</div>
-								</div>
-								<div class="row">
-									{% for i in heroes %}
-									<div class="col-lg-2 col-sm-3 col-md-3">
-										<i class="d2mh hero-{{i.id}}"></i>
-									</div>
-									{% endfor %}								
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg col-sm col-md">
-						<div class="row">
-							<div class="col-lg col-sm col-md"></div>
-							<div class="col-lg-5 col-sm col-md">
-								<p style="color: rgba(255,255,255,0.6);">
-									Statistics:
-								</p>
-							</div>
-						</div>
-						<div class="row" style="padding-top: 2%">
-							<div class="col-lg-6 col-sm col-md"></div>
-							<div class="col-lg-2 col-sm col-md">
-								<span id="wl" style="color: #A9CF54">
-									32
-								</span>
-								<span id="wl"> - </span>
-								<span id="wl" style="color: #C23C2A">
-									32
-								</span>
-								<p style="color: rgba(255,255,255,0.6)"> Matches </p>
-							</div>
-							<div class="col-lg col-sm col-md">
-								<span style="color: white"> 80% </span>
-								<p style="color: rgba(255,255,255,0.6)"> Winrate </p>
-							</div>								
-						</div>
-						<div class="row" style="padding-top: 2%; padding-left: 50%">
-							{% if exist %}
-							<div class="col-lg col-sm col-md ">
-								<button type="button" class="btn btn-danger">
-									Invite
-								</button>
-							</div>
-							{% else %}
-							<div class="col-lg col-sm col-md ">
-								<button type="button" class="btn btn-danger" disabled>
-									<span data-toggle="tooltip" data-placement="bottom" title="We don't have info about this person">Invite</span>
-								</button>
-							</div>	
-							{% endif %}
-						</div>	
-
-					</div>
-				</div>	
+		<el-container>
+			<div id="b">
+				<navigation></navigation>
 			</div>
-		</div>
-		<div class="container-fluid" id="tables">
-			<div class="container-fluid" style="background:#2E3740">
-				<div class="row" style="padding-top: 3%">
-					<div class="col-lg- col-sm col-md" style="padding-left: 1%">
-						<h3 id="matches">Last matches:</h3>
-						<table class="table table-hover table-striped table-dark" id="games">
-							<thead>
-						    	<tr>
-						      		<th scope="col">Hero <span hidden="true">aaaaaaaaaaaaaaaa</span></th>
-						      		<th scope="col">Result <span hidden="true">aaaaaaaaaaaaaaaa</span></th>
-						      		<th scope="col">Duration</th>
-						      		<th scope="col">KDA</th>
-						    	</tr>
-						    </thead>
-						    <tbody>
-						    	{% for ash in matches %}
-									    	<tr onclick="document.location = 'http://127.0.0.1:8090/match/{{ash.id}}'">
-											    <td><i class = "d2mh hero-{{ ash.hero_id }}"></td>
-											    {% if ash.win == 1 %}
-											    	<td style="color: #A9CF54">Win</td>
-											    {% else %}
-											    	<td style="color: #C23C2A">Lose</td>
-											    {% endif %}
-											    <td>{{ ash.duration }}</td>
-											    <td><span style="color:#A9CF54">{{ ash.kills }}</span>/<span style="color:#C23C2A">{{ ash.deaths }}</span>/<span style="color:rgba(255,255,255,0.6)">{{ ash.assists }}</span></td>
-										    </tr>
-							    {% endfor %}						    							    							    							    
-						  	</tbody>
-						</table>
-						<div class="col-lg- col-sm col-md" style="padding-left: 1%">
-							<h3 id="matches">Invites:</h3>
-							{% if names != 'No invites!' %}
-							<table class="table table-bordered table-striped table-dark" id="games">
-								<thead>
-						    	<tr>
-						      		<th scope="col">Team <span hidden="true">aaaaaaaaaaaaaaaa</span></th>
-						      		<th scope="col">Date <span hidden="true">aaaaaaaaaaaaaaaa</span></th>
-						      		<th scope="col"></th>
-						      		<th scope="col"></th>
-						    	</tr>
-						    	</thead>
-						    	<tbody>
-							    		{% for team in names %}
-							    		<tr>
-									    	<td><img id="hero" src="https://upload.wikimedia.org/wikipedia/ru/thumb/3/36/Virtus.pro_cveta_megafona_logo.png/240px-Virtus.pro_cveta_megafona_logo.png"><span style="padding-left: 10px">{{ team }}</span></td>
-									    	<td >21.12.2028</td>
-									    	<form action="http://127.0.0.1:8090/add/{{team}}/{{name}}/succes" >
-										    	<td>
-													<input type="submit" class="btn btn-success" id='succes' value='succes'>									    		
-										    	</td>
-										    </form>
-										    <form action="http://127.0.0.1:8090/add/{{team}}/{{name}}/refuse" >
-										    	<td>
-													<input type="submit" class="btn btn-danger" id='Unsucces' value='Refusal'>									    		
-										    	</td>
-									    	</form>
-								    	</tr>
-								    	{% endfor %}
-							    </tbody>									
-							</table>
-							{% else %}
-							<span>No invites!</span>
-							{% endif %}
+			<div id="container">
+				<div class="info">
+					<div id="person_info" class="shadow-lg rounded">
+						<div class="p_data border-bottom border-secondary">
+							<div class="name fst_info " style="margin-top: 25px">
+								<img class="rounded-circle" src="{{ data.avatar }}" style="height: 50px">
+								<span style="font-size: 25px; margin-left: 5px;">{{data.name}}</span>
+							</div>
+							<img class="fst_info hvr-bob" src="{{data.rank.avatar}}" style="height: 60px">
 						</div>
+						<div id="pers_scnd_inf" class="border-bottom border-secondary">
+							<div class="hvr-bob" id="role">
+								<a style="font-size: 25px; color: #409EFF; margin-top: 20px">Support</a>
+							</div>
+							<div id="pers_best" class="border-left border-secondary">
+								{% for i in heroes %}
+									<i class="d2mh hero-{{i.id}}" style="margin-top: 25px"></i>
+								{% endfor %}
+							</div>
+						</div>
+						<div id="pers_thd_inf" class="border-bottom border-secondary">
+							<div class="border-right border-secondary" id="matches" style="font-size: 25px">
+								<span style="color: #A9CF54; margin-top: 15px"> {{wl.wins}} </span>
+								<span style="margin-top: 15px"> - </span>
+								<span style="color: #C23C2A; margin-top: 15px"> {{wl.loses}} </span>
+							</div>
+							<div id="wr" style="font-size: 25px">
+								{% if wr >= 50 %}
+									<div id="notice1" style="color: #A9CF54; margin-top: 15px">
+										<span @mouseover="act1 = false" @mouseleave="act1 = true" v-if="act1">{{wr}}%</span>
+										<span @mouseover="act1 = true" v-if="act1 === false"> WR</span>
+									</div>
+								{% else %}
+									<div id="notice" style="color: #C23C2A; margin-top: 15px">
+										<span @mouseover="act = false" v-if="act">{{wr}}%</span>
+										<span @mouseover="act = true" v-if="act === false"> WR</span>
+									</div>
+								{% endif %}		
+							</div>
+						</div>
+						<div id="pers_team">
+							{% if data.team != "None" %}
+								<div id="team_name"  class="hvr-bob">
+									<div id="nm"><img src="{{data.team.avatar}}" style="height: 40px; width: 40px; order: 1;"> <a style="order: 2; flex-grow: 3; color: #409EFF; font-size: 25px; margin-left: 5px"> {{data.team.name}} </a> </div>
+								</div>
+							{% else %}
+								<div id="team_name">
+									{% if you %}
+										<div id="you_n" style="display: flex; flex-direction: column; align-items: center;">
+											<a style="font-size: 25px; color: #409EFF; order: 1; margin-top: 10px;">You don't have a team :(</a>
+											<button style="order: 2; width: 50%; margin-top: 10px;" @click="find" class="btn btn-primary">
+												Find
+											</button>
+										</div>
+									{% else %}
+										<div>
+											This person doesn't have any team
+										</div>
+									{% endif %}		
+								</div>
+							{% endif %}									
+						</div>
+						{% if you == False and exist %}
+						<div class="border-top border-secondary" id="invite">	<button class="btn btn-primary" style="height: 70%; width: 35%; margin-top: 10px"> Invite </button> </div>
+						{% elif you == False and exist == False%}
+						<div class="border-top border-secondary" id="invite">	<button class="btn btn-primary" title="We don't have info about this person"> Invite </button> </div>
+						{% endif %}
 					</div>
-					<div class="col-md-4">
-						<h3 id="matches">Last six games graph:</h3>
-						<div id="chart" style="color: white">
-							<table class="table table-bordered table-striped table-dark" id="games">
-								<tbody>
-									<tr>
-										<td>
-											<div class="segment segment-wins" style="background: #A9CF54; height:50px; width: 25px"></div>
-											<div class="segment segment-losses" style="background: red; height:10px; width: 25px"></div>
-										</td>
-										<td>
-											<div class="segment segment-wins" style="width: 25px; height: 25px">
-											</div>
-											<div class="segment segment-losses" style="width: 25px; height: 25px">
-											</div>
-										</td>	
-									</tr>
-								</tbody>	
-							</table>	
-						</div>				
-					</div>
-					<div class="col-sm" id="graph">
-						<h3 id="matches">Best heroes:</h3>
-						<table class="table table-hover table-striped table-dark" id="games">
-							<thead>
-						    	<tr>
-						      		<th scope="col">Hero <span hidden="true">aaaaaaaaaaaaaaaa</span></th>
-						      		<th scope="col">Wins + <span hidden="true">aaaaaaaaaaaaaaaa</span></th>
-							  		<th scope="col">Losses -</th>
-						      		<th scope="col">Winrate %</th>
-						    	</tr>
-					    	</thead>
-					    	<tbody>
-					    		{% for hero in heroes%}
-						    	<tr>
-								    <td><i class = 'd2mh hero-{{ hero.id }}'></td>
-								    <td style="color: #A9CF54"> {{ hero.win }}</td>
-								    <td style="color:#C23C2A"> {{ hero.lose }} </td>
-								    <td>{{ hero.wr }}% <p><div class="segment segment-wins"></div> <div class="segment segment-losses"></div></p></td>
-							    </tr>
-							    {% endfor %}						    							    							    							    
-						  	</tbody>
-						</table>
-					</div>				
+					<div id="graphics">
+							<div class="graph rounded shadow-lg" style="background-color: rgb(33, 37, 41); width: 50%; height: 70%">
+								<canvas id="game_graph"></canvas>
+							</div>
+							<div class="graph rounded shadow-lg" style="background-color: rgb(33, 37, 41); width: 50%; margin-left: 10px; height: 70%">
+								<canvas id="stat_graph"></canvas>
+							</div>
+					</div>						
 				</div>
-			</div>
-		</div>
-	<script src="{% static 'main.js' %}"></script>	
+				<div class="info1" style="margin-bottom: 15px">
+					<div id="person_table">
+						<div id="desc" class="shadow-lg rounded">
+							<div id="name_photo" class="border-bottom border-secondary">
+								<div id="name_photo_name">
+									<img src="https://pp.userapi.com/c841124/v841124900/ec4/flPV3UK1hG4.jpg" style="height: 150px; width: 120px">
+								</div>
+							</div>
+						</div>	
+					</div>	      
+				</div>								
+
+		</el-container>	
+	<script src="{% static 'main.js' %}"></script>
+	<script type="text/javascript">
+		Chart.defaults.global.defaultFontColor = '#dee2e6';
+		Chart.defaults.global.defaultFontFamily = 'SanFrancisco';
+		var p_games = document.getElementById('game_graph').getContext('2d');
+		var p_games = new Chart(p_games, {
+			type: 'doughnut',
+			data: {
+				labels: ["Wins for last 6 games", "Loses for last 6 games"],
+				datasets:[{
+					label: "Last 6 games",
+					data: [{{wins_loses.wins}}, {{wins_loses.loses}}],
+					backgroundColor: ["#4682B4", "#CD5C5C"],
+					borderColor: "#343a40",
+					
+				}],
+			}
+		});
+		var p_stats = document.getElementById('stat_graph').getContext('2d');
+		var p_stats = new Chart(p_stats, {
+			type: 'radar',
+			data: {
+				labels:["Farm", "Wards", "Heal", "Siege", "Fights"],
+				datasets:[{
+					label: "Avg",
+					data: [{{fa_avg}}, 2.5, 4.5, 5, {{fi_avg}}],
+					fill: false,
+					backgroundColor: "#4682B4",	
+					pointBackgroundColor: "#CD5C5C",
+					borderColor: "#4682B4",
+					borderWidth: 2,
+  					hoverBorderWidth: 0				
+				}]	
+			},
+			options: {
+				scale:{
+					ticks:{
+						display: false,
+						beginAtZero: true,
+						max: 5
+					},
+					gridLines:{
+						color: "#343a40",
+					},
+					angleLines:{
+						color: "#343a40",
+					},
+					pointLabels:{
+						fontSize: "16px",
+						fontFamily: "Poppins",
+					}
+				},				
+			}			
+		});
+		var notice = new Vue({
+			el: '#notice',
+			data: {
+				act: true,
+			}
+		});
+		var notice1 = new Vue({
+			el: '#notice1',
+			data: {
+				act1: true,
+			}
+		});
+		var find_t = new Vue({
+			el: '#you_n',
+			methods: {
+				find: function(){
+					window.location.replace("http://127.0.0.1:8090/search")
+				}
+			}
+		})		
+	</script>	
 	</body>
 </html>

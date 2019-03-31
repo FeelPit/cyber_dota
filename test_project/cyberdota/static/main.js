@@ -38,7 +38,7 @@ Vue.component('navigation', {
               class="el-menu-demo"
               mode="horizontal"
               @select="handleSelect"
-              background-color="#212529"
+              background-color="rgb(33, 37, 41)"
               text-color="#6c757d"
               active-text-color="#409EFF">
               <el-menu-item @click = "home" index="0" style="font-size: 32px; color: white"><a>TM</a></el-menu-item>
@@ -53,7 +53,7 @@ Vue.component('navigation', {
                     console.log(key, keyPath);
                   },
                   home: function(){
-                    window.location.replace("http://127.0.0.1:8090/welcome")
+                    window.location.replace("http://127.0.0.1:8090/main_menu")
                   },
                   profile: function(){
                     window.location.replace("http://127.0.0.1:8090/main")
